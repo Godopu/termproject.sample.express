@@ -84,5 +84,3 @@ typings/
 !.vscode/extensions.json
 
 level-db/
-
-config.json
