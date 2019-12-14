@@ -21,6 +21,21 @@ export default class Storage {
         })
     }
 
+    public async queryWithKey(keyName : string): Promise<string> {
+        let retData = new Array<object>();
+        return new Promise(resolve => {
+            db.createReadStream({ keys: true, values: true, gte : keyName, lte : `${keyName}-9`})
+                .on('data', function (data: any) {
+                    console.log(data.key)
+                    retData.push(JSON.parse(data["value"]))
+                })
+                .on('end', () => {
+                    console.log("End")
+                    resolve(JSON.stringify(retData))
+                })
+        })
+    }
+
     public async getData(key: string): Promise<string> {
         return new Promise(resolve => {
             db.get(key, function (err: Error, value: any) {

@@ -19,6 +19,20 @@ class Storage {
             });
         });
     }
+    async queryWithKey(keyName) {
+        let retData = new Array();
+        return new Promise(resolve => {
+            db.createReadStream({ keys: true, values: true, gte: keyName, lte: `${keyName}-9` })
+                .on('data', function (data) {
+                console.log(data.key);
+                retData.push(JSON.parse(data["value"]));
+            })
+                .on('end', () => {
+                console.log("End");
+                resolve(JSON.stringify(retData));
+            });
+        });
+    }
     async getData(key) {
         return new Promise(resolve => {
             db.get(key, function (err, value) {
